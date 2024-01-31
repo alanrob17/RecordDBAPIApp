@@ -26,11 +26,59 @@ namespace RecordDBAPI.Controllers
             return Ok(artists);
         }
 
+        // GET: api/<ArtistController>/GetNoBio
+        [HttpGet]
+        [Route("GetNoBio")]
+        public async Task<IActionResult> GetNoBio()
+        {
+            var artists = await _artistRepository.GetArtistsWithNoBio();
+            return Ok(artists);
+        }
+
         // GET api/<ArtistController>/5
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
             var artist = await _artistRepository.GetArtistById(id);
+            if (artist is null)
+            {
+                return NotFound();
+            }
+            return Ok(artist);
+        }
+
+        // GET api/<ArtistController>/GetByName/{name}
+        [HttpGet]
+        [Route("GetByName/Name/{name}")]
+        public async Task<IActionResult> GetByName(string name)
+        {
+            var artist = await _artistRepository.GetArtistByName(name);
+            if (artist is null)
+            {
+                return NotFound();
+            }
+            return Ok(artist);
+        }
+
+        // GET api/<ArtistController>/GetByFirstLastName/{firstname}/{lastname}
+        [HttpGet]
+        [Route("GetByFirstLastName/FirstName/{firstName}/LastName/{lastName}")]
+        public async Task<IActionResult> GetByFirstLastName(string firstName, string lastName)
+        {
+            var artist = await _artistRepository.GetArtistByFirstLastName(firstName, lastName);
+            if (artist is null)
+            {
+                return NotFound();
+            }
+            return Ok(artist);
+        }
+
+        // GET api/<ArtistController>/GetBiography/5
+        [HttpGet]
+        [Route("GetBiography/{id}")]
+        public async Task<IActionResult> GetBiography(int id)
+        {
+            var artist = await _artistRepository.GetBiography(id);
             if (artist is null)
             {
                 return NotFound();

@@ -25,7 +25,45 @@ namespace DAL.Repository
             return artists;
         }
 
+        public async Task<IEnumerable<Artist>> GetArtistsWithNoBio()
+        {
+            string sproc = "up_selectArtistsWithNoBio";
+            var artists = await _db.GetData<Artist, dynamic>(sproc, new { });
+            return artists;
+        }
+
         public async Task<Artist> GetArtistById(int artistId)
+        {
+            string sproc = "up_ArtistSelectById";
+            var parameter = new DynamicParameters();
+            parameter.Add("@ArtistId", artistId);
+
+            IEnumerable<Artist> artist = await _db.GetData<Artist, dynamic>(sproc, parameter);
+            return artist.FirstOrDefault();
+        }
+
+        public async Task<Artist> GetArtistByName(string name)
+        {
+            string sproc = "up_GetArtistByName";
+            var parameter = new DynamicParameters();
+            parameter.Add("@Name", name);
+
+            IEnumerable<Artist> artist = await _db.GetData<Artist, dynamic>(sproc, parameter);
+            return artist.FirstOrDefault();
+        }
+
+        public async Task<Artist> GetArtistByFirstLastName(string firstName, string lastName)
+        {
+            string sproc = "up_ArtistByFirstLastName";
+            var parameters = new DynamicParameters();
+            parameters.Add("@FirstName", firstName);
+            parameters.Add("@LastName", lastName);
+
+            IEnumerable<Artist> artist = await _db.GetData<Artist, dynamic>(sproc, parameters);
+            return artist.FirstOrDefault();
+        }
+
+        public async Task<Artist> GetBiography(int artistId)
         {
             string sproc = "up_ArtistSelectById";
             var parameter = new DynamicParameters();

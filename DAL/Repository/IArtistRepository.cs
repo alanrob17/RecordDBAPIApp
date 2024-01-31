@@ -11,7 +11,11 @@ namespace DAL.Repository
     {
         Task<bool> AddArtist(Artist artist);
         Task<IEnumerable<Artist>> GetArtists();
+        Task<IEnumerable<Artist>> GetArtistsWithNoBio();
         Task<Artist> GetArtistById(int ArtistId);
+        Task<Artist> GetArtistByName(string name);
+        Task<Artist> GetArtistByFirstLastName(string firstName, string lastName);
+        Task<Artist> GetBiography(int ArtistId);
         Task<bool> UpdateArtist(Artist artist);
         Task<bool> DeleteArtist(int ArtistId);
     }
