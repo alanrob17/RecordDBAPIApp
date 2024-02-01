@@ -126,6 +126,19 @@ namespace RecordDBAPI.Controllers
             return Ok(artist);
         }
 
+        // GET api/<ArtistController>/GetBiography/5
+        [HttpGet]
+        [Route("GetBiographyFromRecordId/{id}")]
+        public async Task<IActionResult> GetBiographyFromRecordId(int id)
+        {
+            string biography = await _artistRepository.GetBiographyFromRecordId(id);
+            if (biography is null)
+            {
+                return NotFound();
+            }
+            return Ok(biography);
+        }
+
         // POST api/<ArtistController>
         [HttpPost]
         public async Task<IActionResult> Post(Artist artist)

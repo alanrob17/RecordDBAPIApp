@@ -5,6 +5,7 @@ namespace DAL.Data
     {
         Task<IEnumerable<T>> GetData<T, P>(string storedProcedure, P parameters, string connectionId = "default");
         Task SaveData<P>(string query, P parameters, string connectionId = "default");
-        Task<int> GetCount<P>(string storedProcedure, P parameters, string connectionId = "default");
+        Task<int> GetCountOrId<P>(string storedProcedure, P parameters, string connectionId = "default");
+        Task<string> GetText<P>(string storedProcedure, P parameters, string connectionId = "default");
     }
 }

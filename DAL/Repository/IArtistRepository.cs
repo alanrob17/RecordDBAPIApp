@@ -16,10 +16,11 @@ namespace DAL.Repository
         Task<int> GetNoBioCount();
         Task<int> GetArtistId(string firstName, string lastName);
         Task<int> GetArtistIdFromRecord(int recordId);
-        Task<Artist> GetArtistById(int ArtistId);
-        Task<Artist> GetArtistByName(string name);
-        Task<Artist> GetArtistByFirstLastName(string firstName, string lastName);
-        Task<Artist> GetBiography(int ArtistId);
+        Task<Artist?> GetArtistById(int ArtistId);
+        Task<Artist?> GetArtistByName(string name);
+        Task<Artist?> GetArtistByFirstLastName(string firstName, string lastName);
+        Task<Artist?> GetBiography(int ArtistId);
+        Task<string> GetBiographyFromRecordId(int RecordId);
         Task<bool> UpdateArtist(Artist artist);
         Task<bool> DeleteArtist(int ArtistId);
     }

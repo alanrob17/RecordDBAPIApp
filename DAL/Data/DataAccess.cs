@@ -19,12 +19,12 @@ namespace DAL.Data
             _config = config;
         }
 
-        //// this method will return a list of type T - only used for queries
-        //public async Task<IEnumerable<T>> GetData<T, P>(string query, P parameters, string connectionId = "default")
-        //{
-        //    using IDbConnection connection = new SqlConnection(_config.GetConnectionString(connectionId));
-        //    return await connection.QueryAsync<T>(query, parameters);
-        //}
+        // this method will return a list of type T - only used for queries
+        public async Task<IEnumerable<T>> GetDataQ<T, P>(string query, P parameters, string connectionId = "default")
+        {
+            using IDbConnection connection = new SqlConnection(_config.GetConnectionString(connectionId));
+            return await connection.QueryAsync<T>(query, parameters);
+        }
 
         // Updated method to support both stored procedures and SQL queries
         public async Task<IEnumerable<T>> GetData<T, P>(string storedProcedure, P parameters, string connectionId = "default")
@@ -34,12 +34,12 @@ namespace DAL.Data
             return await connection.QueryAsync<T>(storedProcedure, parameters, commandType: CommandType.StoredProcedure);
         }
 
-        ////This method will not return anything - only used for queries
-        //public async Task SaveData<P>(string query, P parameters, string connectionId = "default")
-        //{
-        //    using IDbConnection connection = new SqlConnection(_config.GetConnectionString(connectionId));
-        //    await connection.ExecuteAsync(query, parameters);
-        //}
+        //This method will not return anything - only used for queries
+        public async Task SaveDataQ<P>(string query, P parameters, string connectionId = "default")
+        {
+            using IDbConnection connection = new SqlConnection(_config.GetConnectionString(connectionId));
+            await connection.ExecuteAsync(query, parameters);
+        }
 
         public async Task SaveData<P>(string storedProcedure, P parameters, string connectionId = "default")
         {
@@ -48,11 +48,19 @@ namespace DAL.Data
             await connection.ExecuteAsync(storedProcedure, parameters, commandType: CommandType.StoredProcedure);
         }
 
-        public async Task<int> GetCount<P>(string storedProcedure, P parameters, string connectionId = "default")
+        public async Task<int> GetCountOrId<P>(string storedProcedure, P parameters, string connectionId = "default")
         {
             using IDbConnection connection = new SqlConnection(_config.GetConnectionString(connectionId));
 
-            int result = (int)await connection.ExecuteScalarAsync(storedProcedure, parameters, commandType: CommandType.StoredProcedure);
+            int result = await connection.ExecuteAsync(storedProcedure, parameters, commandType: CommandType.StoredProcedure);
+            return result;
+        }
+
+        public async Task<string> GetText<P>(string storedProcedure, P parameters, string connectionId = "default")
+        {
+            using IDbConnection connection = new SqlConnection(_config.GetConnectionString(connectionId));
+
+            string result = (string)await connection.ExecuteScalarAsync(storedProcedure, parameters, commandType: CommandType.StoredProcedure);
             return result;
         }
     }
