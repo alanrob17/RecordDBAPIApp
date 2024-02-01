@@ -155,7 +155,6 @@ namespace RecordDBAPI.Controllers
             }
 
             return Ok();
-
         }
 
         // PUT api/<ArtistController>/5
