@@ -26,6 +26,15 @@ namespace RecordDBAPI.Controllers
             return Ok(artists);
         }
 
+        // GET: api/<ArtistController>
+        [HttpGet]
+        [Route("GetArtistList")]
+        public async Task<IActionResult> GetArtistList()
+        {
+            var artists = await _artistRepository.GetArtistList();
+            return Ok(artists);
+        }
+
         // GET: api/<ArtistController>/GetNoBio
         [HttpGet]
         [Route("GetNoBio")]
@@ -33,6 +42,24 @@ namespace RecordDBAPI.Controllers
         {
             var artists = await _artistRepository.GetArtistsWithNoBio();
             return Ok(artists);
+        }
+
+        // GET: api/<ArtistController>/GetNoBioCount
+        [HttpGet]
+        [Route("GetNoBioCount")]
+        public async Task<IActionResult> GetNoBioCount()
+        {
+            int count = await _artistRepository.GetNoBioCount();
+            return Ok(count);
+        }
+
+        // GET: api/<ArtistController>/GetArtistId/FirstName/{firstName}/LastName/{lastname}
+        [HttpGet]
+        [Route("GetArtistId/FirstName/{firstName}/LastName/{lastName}")]
+        public async Task<IActionResult> GetArtistId(string firstName, string lastName)
+        {
+            int artistId = await _artistRepository.GetArtistId(firstName, lastName);
+            return Ok(artistId);
         }
 
         // GET api/<ArtistController>/5
@@ -47,7 +74,20 @@ namespace RecordDBAPI.Controllers
             return Ok(artist);
         }
 
-        // GET api/<ArtistController>/GetByName/{name}
+        // GET api/<ArtistController>/GetArtistIdFromRecord/5
+        [HttpGet]
+        [Route("GetArtistIdFromRecord/{recordId}")]
+        public async Task<IActionResult> GetArtistIdFromRecord(int recordId)
+        {
+            int artistId = await _artistRepository.GetArtistIdFromRecord(recordId);
+            if (artistId == 0)
+            {
+                return NotFound();
+            }
+            return Ok(artistId);
+        }
+
+        // GET api/<ArtistController>/GetByName/Name/{name}
         [HttpGet]
         [Route("GetByName/Name/{name}")]
         public async Task<IActionResult> GetByName(string name)
@@ -60,7 +100,7 @@ namespace RecordDBAPI.Controllers
             return Ok(artist);
         }
 
-        // GET api/<ArtistController>/GetByFirstLastName/{firstname}/{lastname}
+        // GET api/<ArtistController>/GetByFirstLastName/FirstName/{firstname}/LastName/{lastname}
         [HttpGet]
         [Route("GetByFirstLastName/FirstName/{firstName}/LastName/{lastName}")]
         public async Task<IActionResult> GetByFirstLastName(string firstName, string lastName)

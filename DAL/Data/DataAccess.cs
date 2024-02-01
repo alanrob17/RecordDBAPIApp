@@ -19,7 +19,7 @@ namespace DAL.Data
             _config = config;
         }
 
-        //// this method will return a list of type T
+        //// this method will return a list of type T - only used for queries
         //public async Task<IEnumerable<T>> GetData<T, P>(string query, P parameters, string connectionId = "default")
         //{
         //    using IDbConnection connection = new SqlConnection(_config.GetConnectionString(connectionId));
@@ -34,8 +34,7 @@ namespace DAL.Data
             return await connection.QueryAsync<T>(storedProcedure, parameters, commandType: CommandType.StoredProcedure);
         }
 
-
-        ////This method will not return anything
+        ////This method will not return anything - only used for queries
         //public async Task SaveData<P>(string query, P parameters, string connectionId = "default")
         //{
         //    using IDbConnection connection = new SqlConnection(_config.GetConnectionString(connectionId));
@@ -49,11 +48,11 @@ namespace DAL.Data
             await connection.ExecuteAsync(storedProcedure, parameters, commandType: CommandType.StoredProcedure);
         }
 
-        public async Task<int> SaveDataGetId<P>(string storedProcedure, P parameters, string connectionId = "default")
+        public async Task<int> GetCount<P>(string storedProcedure, P parameters, string connectionId = "default")
         {
             using IDbConnection connection = new SqlConnection(_config.GetConnectionString(connectionId));
 
-            int result = await connection.ExecuteAsync(storedProcedure, parameters, commandType: CommandType.StoredProcedure);
+            int result = (int)await connection.ExecuteScalarAsync(storedProcedure, parameters, commandType: CommandType.StoredProcedure);
             return result;
         }
     }

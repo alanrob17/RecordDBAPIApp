@@ -25,11 +25,37 @@ namespace DAL.Repository
             return artists;
         }
 
+        public async Task<IEnumerable<Artist>> GetArtistList()
+        {
+            string sproc = "up_getArtistListandNone";
+            var artists = await _db.GetData<Artist, dynamic>(sproc, new { });
+            return artists;
+        }
+
         public async Task<IEnumerable<Artist>> GetArtistsWithNoBio()
         {
             string sproc = "up_selectArtistsWithNoBio";
             var artists = await _db.GetData<Artist, dynamic>(sproc, new { });
             return artists;
+        }
+
+        public async Task<int> GetNoBioCount()
+        {
+            string sproc = "up_NoBioCount";
+            int count = await _db.GetCount<dynamic>(sproc, new { });
+            return count;
+        }
+
+        public async Task<int> GetArtistId(string firstName, string lastName)
+        {
+            string sproc = "up_getArtistID";
+            var parameters = new DynamicParameters();
+            parameters.Add("@FirstName", firstName);
+            parameters.Add("@LastName", lastName);
+
+
+            int artistId = await _db.GetCount<dynamic>(sproc, parameters);
+            return artistId;
         }
 
         public async Task<Artist> GetArtistById(int artistId)
@@ -40,6 +66,17 @@ namespace DAL.Repository
 
             IEnumerable<Artist> artist = await _db.GetData<Artist, dynamic>(sproc, parameter);
             return artist.FirstOrDefault();
+        }
+
+        public async Task<int> GetArtistIdFromRecord(int recordId)
+        {
+            int artistId = 0;
+            string sproc = "up_getArtistIdFromRecordId";
+            var parameter = new DynamicParameters();
+            parameter.Add("@RecordId", recordId);
+
+            artistId = await _db.GetCount<dynamic>(sproc, parameter);
+            return artistId;
         }
 
         public async Task<Artist> GetArtistByName(string name)
