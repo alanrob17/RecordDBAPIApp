@@ -12,6 +12,7 @@ namespace DAL.Repository
         Task<bool> AddRecord(Record record);
         Task<IEnumerable<Record>> GetRecords();
         Task<IEnumerable<Record>> GetRecordList();
+        Task<IEnumerable<dynamic>> GetMissingRecordReviews();
         Task<Record?> GetRecordById(int recordId);
         Task<Record?> GetFormattedRecord(int recordId);
         Task<dynamic?> GetArtistRecordEntity(int recordId);
@@ -21,8 +22,11 @@ namespace DAL.Repository
         Task<int> GetTotalNumberOfDiscs();
         Task<int> GetTotalNumberOfRecords();
         Task<int> GetTotalNumberOfBlurays();
+        Task<int> GetYearDiscCount(int year);
+        Task<int> GetBoughtYearDiscCount(int year);
         Task<int> CountAllDiscs(string media = "");
         Task<dynamic?> GetNumberOfArtistRecords(int artistId);
+        Task<int> GetNoReviewCount();
         Task<string> GetArtistName(int recordId);
     }
 }

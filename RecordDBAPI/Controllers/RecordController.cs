@@ -35,6 +35,15 @@ namespace RecordDBAPI.Controllers
             return Ok(records);
         }
 
+        // GET: api/<RecordController>/MissingRecordReview
+        [HttpGet]
+        [Route("MissingRecordReview")]
+        public async Task<IActionResult> MissingRecordReview()
+        {
+            IEnumerable<dynamic> records = await _recordRepository.GetMissingRecordReviews();
+            return Ok(records);
+        }
+
         // GET api/<RecordController>/5
         [HttpGet("{recordId}")]
         public async Task<IActionResult> Get(int recordId)
@@ -115,6 +124,33 @@ namespace RecordDBAPI.Controllers
         public async Task<IActionResult> CountAllDiscs(string media = "")
         {
             int count = await _recordRepository.CountAllDiscs(media);
+            return Ok(count);
+        }
+
+        // GET: api/<RecordController>/GetYearDiscCount/1974
+        [HttpGet]
+        [Route("GetYearDiscCount/{year}")]
+        public async Task<IActionResult> GetYearDiscCount(int year)
+        {
+            int count = await _recordRepository.GetYearDiscCount(year);
+            return Ok(count);
+        }
+
+        // GET: api/<RecordController>/GetBoughtYearDiscCount/1974
+        [HttpGet]
+        [Route("GetBoughtYearDiscCount/{year}")]
+        public async Task<IActionResult> GetBoughtYearDiscCount(int year)
+        {
+            int count = await _recordRepository.GetBoughtYearDiscCount(year);
+            return Ok(count);
+        }
+
+        // GET: api/<RecordController>/GetTotalRecords
+        [HttpGet]
+        [Route("NoReviewCount")]
+        public async Task<IActionResult> NoReviewCount()
+        {
+            int count = await _recordRepository.GetNoReviewCount();
             return Ok(count);
         }
 

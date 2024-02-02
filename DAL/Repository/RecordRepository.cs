@@ -63,6 +63,14 @@ namespace DAL.Repository
             return record?.FirstOrDefault() ?? null;
         }
 
+        public async Task<IEnumerable<dynamic>> GetMissingRecordReviews()
+        {
+            string sproc = "up_MissingRecordReview";
+
+            IEnumerable<dynamic> records = await _db.GetData<dynamic, dynamic>(sproc, new { });
+            return records;
+        }
+
         public async Task<int> GetTotalNumberOfCDs()
         {
             string sproc = "up_GetTotalNumberOfAllCDs";
@@ -90,6 +98,14 @@ namespace DAL.Repository
         public async Task<int> GetTotalNumberOfBlurays()
         {
             string sproc = "up_GetTotalNumberOfAllBlurays";
+
+            int count = await _db.GetCountOrId<dynamic>(sproc, new { });
+            return count;
+        }
+
+        public async Task<int> GetNoReviewCount()
+        {
+            string sproc = "up_GetNoRecordReviewCount";
 
             int count = await _db.GetCountOrId<dynamic>(sproc, new { });
             return count;
@@ -143,6 +159,26 @@ namespace DAL.Repository
 
             string name = await _db.GetText<dynamic>(sproc, parameter);
             return name;
+        }
+
+        public async Task<int> GetYearDiscCount(int year)
+        {
+            string sproc = "up_GetRecordedYearNumber";
+            var parameter = new DynamicParameters();
+            parameter.Add("@Year", year);
+
+            int count = await _db.GetCountOrId<dynamic>(sproc, parameter);
+            return count;
+        }
+
+        public async Task<int> GetBoughtYearDiscCount(int year)
+        {
+            string sproc = "up_GetBoughtDiscCountForYear";
+            var parameter = new DynamicParameters();
+            parameter.Add("@Year", year);
+
+            int count = await _db.GetCountOrId<dynamic>(sproc, parameter);
+            return count;
         }
 
         public async Task<bool> AddRecord(Record record)
