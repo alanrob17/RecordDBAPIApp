@@ -26,17 +26,120 @@ namespace RecordDBAPI.Controllers
 
         }
 
-        // GET api/<RecordController>/5
-        [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
+        // GET: api/<RecordController>/GetRecordList
+        [HttpGet]
+        [Route("GetRecordList")]
+        public async Task<IActionResult> GetRecordList()
         {
-            var record = await _recordRepository.GetRecordById(id);
+            var records = await _recordRepository.GetRecordList();
+            return Ok(records);
+        }
+
+        // GET api/<RecordController>/5
+        [HttpGet("{recordId}")]
+        public async Task<IActionResult> Get(int recordId)
+        {
+            var record = await _recordRepository.GetRecordById(recordId);
             if (record is null)
             {
                 return NotFound();
             }
             return Ok(record);
         }
+
+        // GET api/<RecordController>/5
+        [HttpGet]
+        [Route("GetFormattedRecord/{recordId}")]
+        public async Task<IActionResult> GetFormattedRecord(int recordId)
+        {
+            var record = await _recordRepository.GetFormattedRecord(recordId);
+            if (record is null)
+            {
+                return NotFound();
+            }
+            return Ok(record);
+        }
+
+        // GET api/<RecordController>/GetArtistRecord/5
+        [HttpGet]
+        [Route("GetArtistRecord/{recordId}")]
+        public async Task<IActionResult> GetArtistRecord(int recordId)
+        {
+            var record = await _recordRepository.GetArtistRecordEntity(recordId);
+            if (record is null)
+            {
+                return NotFound();
+            }
+            return Ok(record);
+        }
+
+        // GET: api/<RecordController>/GetCDTotal
+        [HttpGet]
+        [Route("GetCDTotal")]
+        public async Task<IActionResult> GetCDTotal()
+        {
+            int count = await _recordRepository.GetTotalNumberOfCDs();
+            return Ok(count);
+        }
+
+        // GET: api/<RecordController>/GetTotalDiscs
+        [HttpGet]
+        [Route("GetTotalDiscs")]
+        public async Task<IActionResult> GetTotalDiscs()
+        {
+            int count = await _recordRepository.GetTotalNumberOfDiscs();
+            return Ok(count);
+        }
+
+        // GET: api/<RecordController>/GetTotalRecords
+        [HttpGet]
+        [Route("GetTotalRecords")]
+        public async Task<IActionResult> GetTotalRecords()
+        {
+            int count = await _recordRepository.GetTotalNumberOfRecords();
+            return Ok(count);
+        }
+
+        // GET: api/<RecordController>/GetTotalRecords
+        [HttpGet]
+        [Route("GetTotalBlurays")]
+        public async Task<IActionResult> GetTotalBlurays()
+        {
+            int count = await _recordRepository.GetTotalNumberOfBlurays();
+            return Ok(count);
+        }
+
+        // GET: api/<RecordController>/CountAllDiscs/{media}
+        [HttpGet]
+        [Route("CountAllDiscs")]
+        public async Task<IActionResult> CountAllDiscs(string media = "")
+        {
+            int count = await _recordRepository.CountAllDiscs(media);
+            return Ok(count);
+        }
+
+        // GET: api/<RecordController>/GetArtistDiscCount/{artistId}
+        [HttpGet]
+        [Route("GetArtistDiscCount/{artistId}")]
+        public async Task<IActionResult> GetArtistDiscCount(int artistId)
+        {
+            dynamic result = await _recordRepository.GetNumberOfArtistRecords(artistId);
+            return Ok(result);
+        }
+
+        // GET api/<ArtistController>/GetArtistName/5
+        [HttpGet]
+        [Route("GetArtistName/{recordId}")]
+        public async Task<IActionResult> GetArtistName(int recordId)
+        {
+            var record = await _recordRepository.GetArtistName(recordId);
+            if (record is null)
+            {
+                return NotFound();
+            }
+            return Ok(record);
+        }
+
 
         // POST api/<RecordController>
         [HttpPost]
@@ -57,7 +160,7 @@ namespace RecordDBAPI.Controllers
         }
 
         // PUT api/<RecordController>/5
-        [HttpPut("{id}")]
+        [HttpPut("{recordId}")]
         public async Task<IActionResult> Put(int recordId, [FromBody] Record newRecord)
         {
             if (!ModelState.IsValid)
@@ -83,7 +186,7 @@ namespace RecordDBAPI.Controllers
         }
 
         // DELETE api/<RecordController>/5
-        [HttpDelete("{id}")]
+        [HttpDelete("{recordId}")]
         public async Task<IActionResult> Delete(int recordId)
         {
             var artist = await _recordRepository.GetRecordById(recordId);

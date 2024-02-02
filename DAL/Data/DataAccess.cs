@@ -52,7 +52,7 @@ namespace DAL.Data
         {
             using IDbConnection connection = new SqlConnection(_config.GetConnectionString(connectionId));
 
-            int result = await connection.ExecuteAsync(storedProcedure, parameters, commandType: CommandType.StoredProcedure);
+            int result = await connection.ExecuteScalarAsync<int>(storedProcedure, parameters, commandType: CommandType.StoredProcedure);
             return result;
         }
 

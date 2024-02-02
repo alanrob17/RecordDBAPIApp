@@ -26,6 +26,13 @@ namespace DAL.Repository
             return records;
         }
 
+        public async Task<IEnumerable<Record>> GetRecordList()
+        {
+            string sproc = "up_GetAllArtistsAndRecords";
+            var records = await _db.GetData<Record, dynamic>(sproc, new { });
+            return records;
+        }
+
         public async Task<Record?> GetRecordById(int recordId)
         {
             string sproc = "up_RecordSelectById";
@@ -34,6 +41,108 @@ namespace DAL.Repository
 
             IEnumerable<Record> record = await _db.GetData<Record, dynamic>(sproc, parameter);
             return record?.FirstOrDefault() ?? null;
+        }
+
+        public async Task<Record?> GetFormattedRecord(int recordId)
+        {
+            string sproc = "up_getSingleRecord";
+            var parameter = new DynamicParameters();
+            parameter.Add("@RecordId", recordId);
+
+            IEnumerable<Record> record = await _db.GetData<Record, dynamic>(sproc, parameter);
+            return record?.FirstOrDefault() ?? null;
+        }
+
+        public async Task<dynamic?> GetArtistRecordEntity(int recordId)
+        {
+            string sproc = "up_GetArtistRecordEntity";
+            var parameter = new DynamicParameters();
+            parameter.Add("@RecordId", recordId);
+
+            IEnumerable<dynamic> record = await _db.GetData<dynamic, dynamic>(sproc, parameter);
+            return record?.FirstOrDefault() ?? null;
+        }
+
+        public async Task<int> GetTotalNumberOfCDs()
+        {
+            string sproc = "up_GetTotalNumberOfAllCDs";
+
+            int count = await _db.GetCountOrId<dynamic>(sproc, new { });
+            return count;
+        }
+
+        public async Task<int> GetTotalNumberOfDiscs()
+        {
+            string sproc = "up_GetTotalNumberOfAllRecords";
+
+            int count = await _db.GetCountOrId<dynamic>(sproc, new { });
+            return count;
+        }
+
+        public async Task<int> GetTotalNumberOfRecords()
+        {
+            string sproc = "up_GetTotalNumberOfRecords";
+
+            int count = await _db.GetCountOrId<dynamic>(sproc, new { });
+            return count;
+        }
+
+        public async Task<int> GetTotalNumberOfBlurays()
+        {
+            string sproc = "up_GetTotalNumberOfAllBlurays";
+
+            int count = await _db.GetCountOrId<dynamic>(sproc, new { });
+            return count;
+        }
+
+        public async Task<int> CountAllDiscs(string media="")
+        {
+            var mediaType = 0;
+
+            switch (media)
+            {
+                case "":
+                    mediaType = 0;
+                    break;
+                case "DVD":
+                    mediaType = 1;
+                    break;
+                case "CD":
+                    mediaType = 2;
+                    break;
+                case "R":
+                    mediaType = 3;
+                    break;
+                default:
+                    break;
+            }
+
+            string sproc = "up_GetMediaCountByType";
+            var parameter = new DynamicParameters();
+            parameter.Add("@MediaType", mediaType);
+
+            int count = await _db.GetCountOrId<dynamic>(sproc, parameter);
+            return count;
+        }
+
+        public async Task<dynamic?> GetNumberOfArtistRecords(int artistId)
+        {
+            string sproc = "up_GetArtistAndNumberOfRecords";
+            var parameter = new DynamicParameters();
+            parameter.Add("@ArtistId", artistId);
+
+            dynamic result = await _db.GetData<dynamic, dynamic>(sproc, parameter);
+            return result ?? null;
+        }
+
+        public async Task<string> GetArtistName(int recordId)
+        {
+            string sproc = "up_GetArtistNameByRecordId";
+            var parameter = new DynamicParameters();
+            parameter.Add("@RecordId", recordId);
+
+            string name = await _db.GetText<dynamic>(sproc, parameter);
+            return name;
         }
 
         public async Task<bool> AddRecord(Record record)
