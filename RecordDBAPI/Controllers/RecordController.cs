@@ -44,6 +44,24 @@ namespace RecordDBAPI.Controllers
             return Ok(records);
         }
 
+        // GET: api/<RecordController>/GetTotals
+        [HttpGet]
+        [Route("GetTotals")]
+        public async Task<IActionResult> GetTotals()
+        {
+            IEnumerable<dynamic> records = await _recordRepository.GetTotalCosts();
+            return Ok(records);
+        }
+
+        // GET: api/<RecordController>/TotalArtistDiscs
+        [HttpGet]
+        [Route("TotalArtistDiscs")]
+        public async Task<IActionResult> TotalArtistDiscs()
+        {
+            IEnumerable<dynamic> records = await _recordRepository.GetTotalDiscsForEachArtist();
+            return Ok(records);
+        }
+
         // GET api/<RecordController>/5
         [HttpGet("{recordId}")]
         public async Task<IActionResult> Get(int recordId)

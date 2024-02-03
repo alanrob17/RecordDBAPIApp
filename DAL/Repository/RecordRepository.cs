@@ -71,6 +71,22 @@ namespace DAL.Repository
             return records;
         }
 
+        public async Task<IEnumerable<Total>> GetTotalCosts()
+        {
+            string sproc = "sp_getTotalsForEachArtist";
+
+            IEnumerable<Total> totals = await _db.GetData<Total, dynamic>(sproc, new { });
+            return totals;
+        }
+
+        public async Task<IEnumerable<dynamic>> GetTotalDiscsForEachArtist()
+        {
+            string sproc = "sp_getTotalDiscsForEachArtist";
+
+            IEnumerable<dynamic> records = await _db.GetData<dynamic, dynamic>(sproc, new { });
+            return records;
+        }
+
         public async Task<int> GetTotalNumberOfCDs()
         {
             string sproc = "up_GetTotalNumberOfAllCDs";

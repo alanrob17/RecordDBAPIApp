@@ -16,6 +16,8 @@ namespace DAL.Repository
         Task<Record?> GetRecordById(int recordId);
         Task<Record?> GetFormattedRecord(int recordId);
         Task<dynamic?> GetArtistRecordEntity(int recordId);
+        Task<IEnumerable<Total>> GetTotalCosts();
+        Task<IEnumerable<dynamic>> GetTotalDiscsForEachArtist();
         Task<bool> UpdateRecord(Record record);
         Task<bool> DeleteRecord(int recordId);
         Task<int> GetTotalNumberOfCDs();
