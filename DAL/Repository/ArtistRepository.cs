@@ -127,13 +127,14 @@ namespace DAL.Repository
         {
             try
             {
-                string sproc = "sp_AddNewArtist";
+                string sproc = "adm_ArtistInsert";
                 var parameters = new DynamicParameters();
                 parameters.Add("@FirstName", artist.FirstName);
                 parameters.Add("@LastName", artist.LastName);
                 parameters.Add("@Name", artist.Name);
                 parameters.Add("@Biography", artist.Biography);
-                parameters.Add("@ArtistId", dbType: DbType.Int32, direction: ParameterDirection.Output);
+                parameters.Add("@ArtistId", 0);
+                parameters.Add("@Result", dbType: DbType.Int32, direction: ParameterDirection.InputOutput);
 
                 await _db.SaveData(sproc, parameters);
                 return true;

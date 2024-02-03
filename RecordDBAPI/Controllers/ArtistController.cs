@@ -63,10 +63,10 @@ namespace RecordDBAPI.Controllers
         }
 
         // GET api/<ArtistController>/5
-        [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
+        [HttpGet("{artistId}")]
+        public async Task<IActionResult> Get(int artistId)
         {
-            var artist = await _artistRepository.GetArtistById(id);
+            var artist = await _artistRepository.GetArtistById(artistId);
             if (artist is null)
             {
                 return NotFound();
@@ -115,10 +115,10 @@ namespace RecordDBAPI.Controllers
 
         // GET api/<ArtistController>/GetBiography/5
         [HttpGet]
-        [Route("GetBiography/{id}")]
-        public async Task<IActionResult> GetBiography(int id)
+        [Route("GetBiography/{artistId}")]
+        public async Task<IActionResult> GetBiography(int artistId)
         {
-            var artist = await _artistRepository.GetBiography(id);
+            var artist = await _artistRepository.GetBiography(artistId);
             if (artist is null)
             {
                 return NotFound();
@@ -128,10 +128,10 @@ namespace RecordDBAPI.Controllers
 
         // GET api/<ArtistController>/GetBiography/5
         [HttpGet]
-        [Route("GetBiographyFromRecordId/{id}")]
-        public async Task<IActionResult> GetBiographyFromRecordId(int id)
+        [Route("GetBiographyFromRecordId/{recordId}")]
+        public async Task<IActionResult> GetBiographyFromRecordId(int recordId)
         {
-            string biography = await _artistRepository.GetBiographyFromRecordId(id);
+            string biography = await _artistRepository.GetBiographyFromRecordId(recordId);
             if (biography is null)
             {
                 return NotFound();
@@ -143,12 +143,14 @@ namespace RecordDBAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> Post(Artist artist)
         {
+
             if (!ModelState.IsValid)
             {
                 return BadRequest("Invalid data");
             }
 
             var result = await _artistRepository.AddArtist(artist);
+            await Console.Out.WriteLineAsync($"Artist Id: {result}");
             if (!result)
             {
                 return BadRequest("could not save data");
@@ -158,7 +160,7 @@ namespace RecordDBAPI.Controllers
         }
 
         // PUT api/<ArtistController>/5
-        [HttpPut("{id}")]
+        [HttpPut("{artistId}")]
         public async Task<IActionResult> Put(int artistId, [FromBody] Artist newArtist)
         {
             if (!ModelState.IsValid)
@@ -184,7 +186,7 @@ namespace RecordDBAPI.Controllers
         }
 
         // DELETE api/<ArtistController>/5
-        [HttpDelete("{id}")]
+        [HttpDelete("{artistId}")]
         public async Task<IActionResult> Delete(int artistId)
         {
             var artist = await _artistRepository.GetArtistById(artistId);
