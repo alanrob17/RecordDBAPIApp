@@ -56,6 +56,22 @@ namespace DAL.Data
             return result;
         }
 
+        public async Task<int> GetCountOrIdQ<P>(string query, P parameters, string connectionId = "default")
+        {
+            using IDbConnection connection = new SqlConnection(_config.GetConnectionString(connectionId));
+
+            int result = await connection.ExecuteScalarAsync<int>(query, parameters);
+            return result;
+        }
+
+        public async Task<decimal> GetCostQ<P>(string query, P parameters, string connectionId = "default")
+        {
+            using IDbConnection connection = new SqlConnection(_config.GetConnectionString(connectionId));
+
+            decimal result = await connection.ExecuteScalarAsync<decimal>(query, parameters);
+            return result;
+        }
+
         public async Task<string> GetText<P>(string storedProcedure, P parameters, string connectionId = "default")
         {
             using IDbConnection connection = new SqlConnection(_config.GetConnectionString(connectionId));

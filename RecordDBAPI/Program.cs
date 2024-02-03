@@ -19,6 +19,7 @@ namespace RecordDBAPI
             builder.Services.AddTransient<IDataAccess, DataAccess>();
             builder.Services.AddTransient<IArtistRepository, ArtistRepository>();
             builder.Services.AddTransient<IRecordRepository, RecordRepository>();
+            builder.Services.AddTransient<IStatisticRepository, StatisticRepository>();
 
             var app = builder.Build();
 
